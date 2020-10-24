@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="bf84b97b-3215-4fb7-b1fc-12795cfdedef" />
+	<flow name="mule4-sample-fileFlow" doc:id="f309e32d-0f5f-4abf-af00-d9b06efc592f" >
+		<file:listener doc:name="On New or Updated File" doc:id="b9ad8e05-6e1d-443c-bf64-5b876883ccc7" config-ref="File_Config" directory="C:/Software/Test/Input">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="5ad812a3-e92c-432e-8d5b-b0cbe8107a9c" message="#[output text/plain --- 'Received file path - ' ++ attributes.path ++ ', payload - ' ++ payload]"/>
+		<file:write doc:name="Write" doc:id="ee403070-a6d6-4e1d-a1e4-6a4bec6cd1dc" config-ref="File_Config" path="#['C:/Software/Test/Output/' ++ attributes.fileName]"/>
+		<file:delete doc:name="Delete" doc:id="d89b6f4b-6161-47ef-93f4-10f6a15790ca" config-ref="File_Config" path="#[attributes.path]"/>
+	</flow>
+</mule>
